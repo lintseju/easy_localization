@@ -70,14 +70,16 @@ class EasyLocalizationController extends ChangeNotifier {
     Locale deviceLocale, {
     Locale? fallbackLocale,
   }) {
+    Locale qDeviceLocale = deviceLocale;
+    String qTest = deviceLocale.toString();
+      if (qTest.startsWith("zh_Hans")) qDeviceLocale = Locale("zh","CN");
+    else if (qTest.startsWith("zh_Hant_HK")) qDeviceLocale = Locale("zh","HK");
+    else if (qTest.startsWith("zh_Hant")) qDeviceLocale = Locale("zh","TW");
     final selectedLocale = supportedLocales.firstWhere(
-      (locale) => locale.supports(deviceLocale),
-      orElse: () => _getFallbackLocale(
-        supportedLocales,
-        fallbackLocale,
-        deviceLocale: deviceLocale,
-      ),
+      (locale) => locale.supports(qDeviceLocale),
+      orElse: () => _getFallbackLocale(supportedLocales, fallbackLocale),
     );
+
     return selectedLocale;
   }
 
